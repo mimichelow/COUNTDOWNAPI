@@ -13,28 +13,29 @@ def letters():
         return {}, 400
     return jsonify(cs.countdownSolver(letter)), 200
 
+
 @app.route("/api/numbers", methods=['GET'])
 def numbers():
-    target= request.args.get("target")
-    nums=request.args.get("nums")
-    nums=nums.split(",")
-    if not checkArgs(target,nums):
-        return {}, 400
+    target = request.args.get("target")
+    nums = request.args.get("nums")
+    nums = nums.split(",")
+    if not checkArgs(target, nums):
+        return {"response": None}, 400
     else:
-        temp=[int(n) for n in nums]
-        return cns.countdownNumerSolver(temp,int(target)),200
-
+        temp = [int(n) for n in nums]
+        return cns.countdownNumerSolver(numbers=temp, target=int(target)), 200
 
 
 def checkArgs(t, n):
-    try:
-        t.isnumeric()
-        for i in n:
-            i.isnumeric()
-    except:
+    if t.isnumeric():
+        if len(t) == 3:
+            for num in n:
+                if not num.isnumeric():
+                    return False
+            return True
         return False
     else:
-        return True
+        return False
 
 
 if __name__ == '__main__':
